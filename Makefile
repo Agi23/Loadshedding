@@ -2,7 +2,7 @@ srcD = src
 binD = bin
 docD = doc
 
-JF = src/Tester.java
+JF = src/LSArrayApp.java src/LSInfoItem.java
 
 JFLAGS = -g -d $(binD) -cp $(binD)
 JC = javac
@@ -15,7 +15,7 @@ vpath %.class $(binD)
 	$(JC) $(JFLAGS) $<
 
 
-all: Tester.class doc
+all: LSArrayApp.class LSInfoItem.class doc
 
 .PHONY: doc
 
@@ -30,4 +30,4 @@ clean:
 	@rm -f  $(binD)/*.class
 
 run:
-	@java -cp bin Tester 
+	@java -cp bin LSArrayApp
