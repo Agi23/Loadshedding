@@ -1,19 +1,13 @@
 package src;
 import java.io.File;
-import java.util.Scanner;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 public class LSArrayApp {
     
-    /** 
-     * @param args
-     * @return 
-     */
-    public static void main(String[] args) {
-        System.out.println("hello");
-    } 
+    
     
     /** 
      * @return 
@@ -34,20 +28,42 @@ public class LSArrayApp {
     /** 
      * Reads file
      */
-    public void ReadFile(){
-        Scanner fileIn =null;
-
-        try{
-            fileIn = new Scanner(new FileInputStream("LSData.txt"));
+    public static void ReadFile(){
+    
+        String line;
+        String pathToFile = "LSData.txt";
+        BufferedReader fin = null; 
+        try
+        {
+            fin= new BufferedReader(new InputStreamReader(new FileInputStream(pathToFile)));
+        do
+        {
+        line = fin.readLine();
+        System.out.println(line);
+        if(line==null)        //Checks if you reached end of file
+            break;               //Exits the loop if end of file reached
+        //TO DO CODE
+        }
+        while(line!=null);
+            fin.close();             //Close the stream
+        }
+        catch(IOException e)
+        {
+        System.out.println(e.getMessage() +"\nProgram will be aborted");
+        System.exit(0);
         }
 
-        catch (FileNotFoundException e){
-            System.out.println("File not found");
-            System.exit(0);
-        }
+        
 
     }
     
-    
+    /** 
+     * @param args
+     * @return 
+     */
+    public static void main(String[] args) {
+        System.out.println("hello");
+        ReadFile();
+    } 
      
 }
