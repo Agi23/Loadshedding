@@ -1,33 +1,33 @@
-srcD = src
-binD = bin
-docD = doc
+# Makefile for Assignment One
+SRC_DIR = ./src
+BIN_DIR = ./bin
+DOC_DIR = ./doc
 
-JF = src/LSArrayApp.java src/LSInfoItem.java
+JAVAC = javac
+JFLAGS = -g -d $(BIN_DIR) -cp $(BIN_DIR)
 
-JFLAGS = -g -d $(binD) -cp $(binD)
-JC = javac
+vpath %.java $(SRC_DIR)
+vpath %.class $(BIN_DIR)
 
-vpath %.java $(srcD)
-vpath %.class $(binD)
+# General build rule for java sources
+.SUFFIXES:  .java  .class
 
-.SUFFIXES: .java .class
 .java.class:
-	$(JC) $(JFLAGS) $<
+	$(JAVAC)  $(JFLAGS)  $<
 
+#$< expands to a matching source file
+#default rule - will be invoked by make
 
-all: LSArrayApp.class LSInfoItem.class doc
-
-.PHONY: doc
-
-doc: 
-	@javadoc -d docD $(JF)
-
-cleandoc: 
-	@rm -rf $(docD)
-	@mkdir $(docD)
+ClASSES:LSInfoItem.class \
+	LSArray.class \
+	LSArrayApp.class 
 
 clean:
-	@rm -f  $(binD)/*.class
+	@rm -f  $(BIN_DIR)/*.class
 
-run:
-	@java -cp bin LSArrayApp
+docs:
+	javadoc  -classpath ${BIN_DIR} -d ${DOC_DIR} ${SRC_DIR}/*.java
+
+cleandocs:
+	rm -rf ${DOC_DIR}/*
+
