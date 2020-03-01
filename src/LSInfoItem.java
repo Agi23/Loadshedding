@@ -31,6 +31,6 @@ public class LSInfoItem {
     }
 
     public String toString(){
-        return "Time: " + LSTime + "/n" + "Areas: " +LSAreas;
+        return "Time: " + LSTime + System.lineSeparator() + "Areas: " +LSAreas + System.lineSeparator();
     }
 }
