@@ -20,7 +20,13 @@ vpath %.class $(BIN_DIR)
 
 ClASSES:LSInfoItem.class \
 	LSArray.class \
-	LSArrayApp.class 
+	LSArrayApp.class \
+	BinaryTreeNode.class \
+	BTQueueNode.class \
+	BTQueue.class \
+	BinaryTree.class \
+	LSBSTApp.class 
+
 
 clean:
 	@rm -f  $(BIN_DIR)/*.class
