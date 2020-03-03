@@ -25,9 +25,12 @@ public class LSInfoItem {
         return LSAreas;
     }
 
-    public int compareTo(String timeIn){
-        return LSTime.compareTo(timeIn);
+    //public int compareTo(String timeIn){
+    //    return LSTime.compareTo(timeIn);
 
+    public int compareTo(LSInfoItem item){
+        String itemTime = item.LSTime;
+        return itemTime.compareTo(LSTime);
     }
 
     public String toString(){

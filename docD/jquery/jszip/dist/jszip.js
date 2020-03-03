@@ -1348,7 +1348,7 @@ var NodejsStreamInputAdapter = require("./nodejs/NodejsStreamInputAdapter");
  */
 var fileAdd = function(name, data, originalOptions) {
     // be sure sub folders exist
-    var dataType = utils.getTypeOf(data),
+    var LSInfoItem = utils.getTypeOf(data),
         parent;
 
 
@@ -1382,7 +1382,7 @@ var fileAdd = function(name, data, originalOptions) {
         folderAdd.call(this, parent, true);
     }
 
-    var isUnicodeString = dataType === "string" && o.binary === false && o.base64 === false;
+    var isUnicodeString = LSInfoItem === "string" && o.binary === false && o.base64 === false;
     if (!originalOptions || typeof originalOptions.binary === "undefined") {
         o.binary = !isUnicodeString;
     }
@@ -1395,7 +1395,7 @@ var fileAdd = function(name, data, originalOptions) {
         o.binary = true;
         data = "";
         o.compression = "STORE";
-        dataType = "string";
+        LSInfoItem = "string";
     }
 
     /*
@@ -3476,18 +3476,18 @@ exports.prepareContent = function(name, inputData, isBinary, isOptimizedBinarySt
     });
 
     return promise.then(function(data) {
-        var dataType = exports.getTypeOf(data);
+        var LSInfoItem = exports.getTypeOf(data);
 
-        if (!dataType) {
+        if (!LSInfoItem) {
             return external.Promise.reject(
                 new Error("Can't read the data of '" + name + "'. Is it " +
                           "in a supported JavaScript type (String, Blob, ArrayBuffer, etc) ?")
             );
         }
         // special case : it's way easier to work with Uint8Array than with ArrayBuffer
-        if (dataType === "arraybuffer") {
+        if (LSInfoItem === "arraybuffer") {
             data = exports.transformTo("uint8array", data);
-        } else if (dataType === "string") {
+        } else if (LSInfoItem === "string") {
             if (isBase64) {
                 data = base64.decode(data);
             }

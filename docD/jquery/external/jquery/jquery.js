@@ -8538,20 +8538,20 @@ var
 	rprotocol = /^\/\//,
 
 	/* Prefilters
-	 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
+	 * 1) They are useful to introduce custom LSInfoItems (see ajax/jsonp.js for an example)
 	 * 2) These are called:
 	 *    - BEFORE asking for a transport
 	 *    - AFTER param serialization (s.data is a string if s.processData is true)
-	 * 3) key is the dataType
+	 * 3) key is the LSInfoItem
 	 * 4) the catchall symbol "*" can be used
-	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
+	 * 5) execution will start with transport LSInfoItem and THEN continue down to "*" if needed
 	 */
 	prefilters = {},
 
 	/* Transports bindings
-	 * 1) key is the dataType
+	 * 1) key is the LSInfoItem
 	 * 2) the catchall symbol "*" can be used
-	 * 3) selection will start with transport dataType and THEN go to "*" if needed
+	 * 3) selection will start with transport LSInfoItem and THEN go to "*" if needed
 	 */
 	transports = {},
 
@@ -8565,31 +8565,31 @@ var
 // Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
 function addToPrefiltersOrTransports( structure ) {
 
-	// dataTypeExpression is optional and defaults to "*"
-	return function( dataTypeExpression, func ) {
+	// LSInfoItemExpression is optional and defaults to "*"
+	return function( LSInfoItemExpression, func ) {
 
-		if ( typeof dataTypeExpression !== "string" ) {
-			func = dataTypeExpression;
-			dataTypeExpression = "*";
+		if ( typeof LSInfoItemExpression !== "string" ) {
+			func = LSInfoItemExpression;
+			LSInfoItemExpression = "*";
 		}
 
-		var dataType,
+		var LSInfoItem,
 			i = 0,
-			dataTypes = dataTypeExpression.toLowerCase().match( rnothtmlwhite ) || [];
+			LSInfoItems = LSInfoItemExpression.toLowerCase().match( rnothtmlwhite ) || [];
 
 		if ( isFunction( func ) ) {
 
-			// For each dataType in the dataTypeExpression
-			while ( ( dataType = dataTypes[ i++ ] ) ) {
+			// For each LSInfoItem in the LSInfoItemExpression
+			while ( ( LSInfoItem = LSInfoItems[ i++ ] ) ) {
 
 				// Prepend if requested
-				if ( dataType[ 0 ] === "+" ) {
-					dataType = dataType.slice( 1 ) || "*";
-					( structure[ dataType ] = structure[ dataType ] || [] ).unshift( func );
+				if ( LSInfoItem[ 0 ] === "+" ) {
+					LSInfoItem = LSInfoItem.slice( 1 ) || "*";
+					( structure[ LSInfoItem ] = structure[ LSInfoItem ] || [] ).unshift( func );
 
 				// Otherwise append
 				} else {
-					( structure[ dataType ] = structure[ dataType ] || [] ).push( func );
+					( structure[ LSInfoItem ] = structure[ LSInfoItem ] || [] ).push( func );
 				}
 			}
 		}
@@ -8602,25 +8602,25 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 	var inspected = {},
 		seekingTransport = ( structure === transports );
 
-	function inspect( dataType ) {
+	function inspect( LSInfoItem ) {
 		var selected;
-		inspected[ dataType ] = true;
-		jQuery.each( structure[ dataType ] || [], function( _, prefilterOrFactory ) {
-			var dataTypeOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
-			if ( typeof dataTypeOrTransport === "string" &&
-				!seekingTransport && !inspected[ dataTypeOrTransport ] ) {
+		inspected[ LSInfoItem ] = true;
+		jQuery.each( structure[ LSInfoItem ] || [], function( _, prefilterOrFactory ) {
+			var LSInfoItemOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
+			if ( typeof LSInfoItemOrTransport === "string" &&
+				!seekingTransport && !inspected[ LSInfoItemOrTransport ] ) {
 
-				options.dataTypes.unshift( dataTypeOrTransport );
-				inspect( dataTypeOrTransport );
+				options.LSInfoItems.unshift( LSInfoItemOrTransport );
+				inspect( LSInfoItemOrTransport );
 				return false;
 			} else if ( seekingTransport ) {
-				return !( selected = dataTypeOrTransport );
+				return !( selected = LSInfoItemOrTransport );
 			}
 		} );
 		return selected;
 	}
 
-	return inspect( options.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
+	return inspect( options.LSInfoItems[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
 }
 
 // A special extend for ajax options
@@ -8643,18 +8643,18 @@ function ajaxExtend( target, src ) {
 }
 
 /* Handles responses to an ajax request:
- * - finds the right dataType (mediates between content-type and expected dataType)
+ * - finds the right LSInfoItem (mediates between content-type and expected LSInfoItem)
  * - returns the corresponding response
  */
 function ajaxHandleResponses( s, jqXHR, responses ) {
 
-	var ct, type, finalDataType, firstDataType,
+	var ct, type, finalLSInfoItem, firstLSInfoItem,
 		contents = s.contents,
-		dataTypes = s.dataTypes;
+		LSInfoItems = s.LSInfoItems;
 
-	// Remove auto dataType and get content-type in the process
-	while ( dataTypes[ 0 ] === "*" ) {
-		dataTypes.shift();
+	// Remove auto LSInfoItem and get content-type in the process
+	while ( LSInfoItems[ 0 ] === "*" ) {
+		LSInfoItems.shift();
 		if ( ct === undefined ) {
 			ct = s.mimeType || jqXHR.getResponseHeader( "Content-Type" );
 		}
@@ -8664,40 +8664,40 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 	if ( ct ) {
 		for ( type in contents ) {
 			if ( contents[ type ] && contents[ type ].test( ct ) ) {
-				dataTypes.unshift( type );
+				LSInfoItems.unshift( type );
 				break;
 			}
 		}
 	}
 
-	// Check to see if we have a response for the expected dataType
-	if ( dataTypes[ 0 ] in responses ) {
-		finalDataType = dataTypes[ 0 ];
+	// Check to see if we have a response for the expected LSInfoItem
+	if ( LSInfoItems[ 0 ] in responses ) {
+		finalLSInfoItem = LSInfoItems[ 0 ];
 	} else {
 
-		// Try convertible dataTypes
+		// Try convertible LSInfoItems
 		for ( type in responses ) {
-			if ( !dataTypes[ 0 ] || s.converters[ type + " " + dataTypes[ 0 ] ] ) {
-				finalDataType = type;
+			if ( !LSInfoItems[ 0 ] || s.converters[ type + " " + LSInfoItems[ 0 ] ] ) {
+				finalLSInfoItem = type;
 				break;
 			}
-			if ( !firstDataType ) {
-				firstDataType = type;
+			if ( !firstLSInfoItem ) {
+				firstLSInfoItem = type;
 			}
 		}
 
 		// Or just use first one
-		finalDataType = finalDataType || firstDataType;
+		finalLSInfoItem = finalLSInfoItem || firstLSInfoItem;
 	}
 
-	// If we found a dataType
-	// We add the dataType to the list if needed
+	// If we found a LSInfoItem
+	// We add the LSInfoItem to the list if needed
 	// and return the corresponding response
-	if ( finalDataType ) {
-		if ( finalDataType !== dataTypes[ 0 ] ) {
-			dataTypes.unshift( finalDataType );
+	if ( finalLSInfoItem ) {
+		if ( finalLSInfoItem !== LSInfoItems[ 0 ] ) {
+			LSInfoItems.unshift( finalLSInfoItem );
 		}
-		return responses[ finalDataType ];
+		return responses[ finalLSInfoItem ];
 	}
 }
 
@@ -8708,19 +8708,19 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 	var conv2, current, conv, tmp, prev,
 		converters = {},
 
-		// Work with a copy of dataTypes in case we need to modify it for conversion
-		dataTypes = s.dataTypes.slice();
+		// Work with a copy of LSInfoItems in case we need to modify it for conversion
+		LSInfoItems = s.LSInfoItems.slice();
 
 	// Create converters map with lowercased keys
-	if ( dataTypes[ 1 ] ) {
+	if ( LSInfoItems[ 1 ] ) {
 		for ( conv in s.converters ) {
 			converters[ conv.toLowerCase() ] = s.converters[ conv ];
 		}
 	}
 
-	current = dataTypes.shift();
+	current = LSInfoItems.shift();
 
-	// Convert to each sequential dataType
+	// Convert to each sequential LSInfoItem
 	while ( current ) {
 
 		if ( s.responseFields[ current ] ) {
@@ -8729,20 +8729,20 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 
 		// Apply the dataFilter if provided
 		if ( !prev && isSuccess && s.dataFilter ) {
-			response = s.dataFilter( response, s.dataType );
+			response = s.dataFilter( response, s.LSInfoItem );
 		}
 
 		prev = current;
-		current = dataTypes.shift();
+		current = LSInfoItems.shift();
 
 		if ( current ) {
 
-			// There's only work to do if current dataType is non-auto
+			// There's only work to do if current LSInfoItem is non-auto
 			if ( current === "*" ) {
 
 				current = prev;
 
-			// Convert response if prev dataType is non-auto and differs from current
+			// Convert response if prev LSInfoItem is non-auto and differs from current
 			} else if ( prev !== "*" && prev !== current ) {
 
 				// Seek a direct converter
@@ -8765,10 +8765,10 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 								if ( conv === true ) {
 									conv = converters[ conv2 ];
 
-								// Otherwise, insert the intermediate dataType
+								// Otherwise, insert the intermediate LSInfoItem
 								} else if ( converters[ conv2 ] !== true ) {
 									current = tmp[ 0 ];
-									dataTypes.unshift( tmp[ 1 ] );
+									LSInfoItems.unshift( tmp[ 1 ] );
 								}
 								break;
 							}
@@ -8821,7 +8821,7 @@ jQuery.extend( {
 		/*
 		timeout: 0,
 		data: null,
-		dataType: null,
+		LSInfoItem: null,
 		username: null,
 		password: null,
 		cache: null,
@@ -9042,8 +9042,8 @@ jQuery.extend( {
 		// Alias method option to type as per ticket #12004
 		s.type = options.method || options.type || s.method || s.type;
 
-		// Extract dataTypes list
-		s.dataTypes = ( s.dataType || "*" ).toLowerCase().match( rnothtmlwhite ) || [ "" ];
+		// Extract LSInfoItems list
+		s.LSInfoItems = ( s.LSInfoItem || "*" ).toLowerCase().match( rnothtmlwhite ) || [ "" ];
 
 		// A cross-domain request is in order when the origin doesn't match the current origin.
 		if ( s.crossDomain == null ) {
@@ -9145,12 +9145,12 @@ jQuery.extend( {
 			jqXHR.setRequestHeader( "Content-Type", s.contentType );
 		}
 
-		// Set the Accepts header for the server, depending on the dataType
+		// Set the Accepts header for the server, depending on the LSInfoItem
 		jqXHR.setRequestHeader(
 			"Accept",
-			s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[ 0 ] ] ?
-				s.accepts[ s.dataTypes[ 0 ] ] +
-					( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
+			s.LSInfoItems[ 0 ] && s.accepts[ s.LSInfoItems[ 0 ] ] ?
+				s.accepts[ s.LSInfoItems[ 0 ] ] +
+					( s.LSInfoItems[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
 				s.accepts[ "*" ]
 		);
 
@@ -9355,7 +9355,7 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 		return jQuery.ajax( jQuery.extend( {
 			url: url,
 			type: method,
-			dataType: type,
+			LSInfoItem: type,
 			data: data,
 			success: callback
 		}, jQuery.isPlainObject( url ) && url ) );
@@ -9369,7 +9369,7 @@ jQuery._evalUrl = function( url ) {
 
 		// Make this explicit, since user can override this through ajaxSetup (#11264)
 		type: "GET",
-		dataType: "script",
+		LSInfoItem: "script",
 		cache: true,
 		async: false,
 		global: false,
@@ -9619,14 +9619,14 @@ jQuery.ajaxTransport( function( options ) {
 
 
 
-// Prevent auto-execution of scripts when no explicit dataType was provided (See gh-2432)
+// Prevent auto-execution of scripts when no explicit LSInfoItem was provided (See gh-2432)
 jQuery.ajaxPrefilter( function( s ) {
 	if ( s.crossDomain ) {
 		s.contents.script = false;
 	}
 } );
 
-// Install script dataType
+// Install script LSInfoItem
 jQuery.ajaxSetup( {
 	accepts: {
 		script: "text/javascript, application/javascript, " +
@@ -9716,7 +9716,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 		);
 
 	// Handle iff the expected data type is "jsonp" or we have a parameter to set
-	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
+	if ( jsonProp || s.LSInfoItems[ 0 ] === "jsonp" ) {
 
 		// Get callback name, remembering preexisting value associated with it
 		callbackName = s.jsonpCallback = isFunction( s.jsonpCallback ) ?
@@ -9738,8 +9738,8 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 			return responseContainer[ 0 ];
 		};
 
-		// Force json dataType
-		s.dataTypes[ 0 ] = "json";
+		// Force json LSInfoItem
+		s.LSInfoItems[ 0 ] = "json";
 
 		// Install callback
 		overwritten = window[ callbackName ];
@@ -9882,7 +9882,7 @@ jQuery.fn.load = function( url, params, callback ) {
 			// Make value of this field explicit since
 			// user can override it through ajaxSetup method
 			type: type || "GET",
-			dataType: "html",
+			LSInfoItem: "html",
 			data: params
 		} ).done( function( responseText ) {
 

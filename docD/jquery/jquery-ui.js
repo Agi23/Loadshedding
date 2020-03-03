@@ -2375,7 +2375,7 @@ $.widget( "ui.autocomplete", {
 				that.xhr = $.ajax( {
 					url: url,
 					data: request,
-					dataType: "json",
+					LSInfoItem: "json",
 					success: function( data ) {
 						response( data );
 					},
