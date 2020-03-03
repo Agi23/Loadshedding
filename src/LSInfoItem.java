@@ -9,12 +9,16 @@ public class LSInfoItem {
 
         //copy from _ value +2 and store in LSTime
         this.LSTime = LSLine.substring(0,pos +3);
-    
+        if (LSLine.length() > pos + 3){
         //Store remaining info of LSLine into LSAreasDraft
         String LSAreasDraft = LSLine.substring(pos + 3);
 
         //Remove spaces of the location and store in LSAreas
         this.LSAreas = LSAreasDraft.replace(" ", "");
+        }
+        else{
+            this.LSAreas = null;
+        }
     }
 
     public String getLSTime(){
