@@ -13,10 +13,6 @@ class Hello{
         System.out.println("Random Integers: "+rand_int1); 
         System.out.println("Random Integers: "+rand_int2); 
 
-        String txtfile = "data297.txt";
-        int pos = txtfile.indexOf(".");
-        System.out.println(pos);
-        //int size = Integer.valueOf(txtfile.substring(3,pos));
-        System.out.println(txtfile.substring(4,pos));
+        System.out.println(args[0]);
     }
 }
