@@ -15,36 +15,7 @@ class LSBSTApp{
 
         //myQueue.enQueue(myTreeNode);
 
-        LSInfoItem curItem;
-        //Read in file into binary tree
-        String line;
-        String pathToFile = "LSData.txt";
-        BufferedReader fin = null;
         
-        try {
-            fin = new BufferedReader(new InputStreamReader(new FileInputStream(pathToFile)));
-            do {
-                line = fin.readLine();
-                //System.out.println(k);
-                    
-    
-                // System.out.println(line);
-                if (line == null) // Checks if you reached end of file
-                    break; // Exits the loop if end of file reached
-                else{
-                    curItem = new LSInfoItem(line);
-                    myTree.insert(curItem);
-                }
-                   
-            }
-            while (line != null);
-            fin.close(); // Close the stream
-        }       
-                
-        catch (final IOException e){
-            System.out.println(e.getMessage() +"\nProgram will be aborted");
-            System.exit(0);
-        }
 
         
         if (args.length == 0){

@@ -25,7 +25,10 @@ ClASSES:LSInfoItem.class \
 	BTQueueNode.class \
 	BTQueue.class \
 	BinaryTree.class \
-	LSBSTApp.class 
+	LSBSTApp.class \
+	testGen.class \
+	Counter.class\
+	LSManager.class \
 
 
 clean:

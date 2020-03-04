@@ -2,8 +2,10 @@
 public class LSInfoItem {
     String LSTime;
     String LSAreas;
+    String LSRawString;
 
     public LSInfoItem(String LSLine){
+        this.LSRawString = LSLine;
         //Find position of last _ value
         int pos = LSLine.lastIndexOf("_");
 
@@ -27,6 +29,10 @@ public class LSInfoItem {
 
     public String getLSAreas(){
         return LSAreas;
+    }
+
+    public String getLSRawString(){
+        return LSRawString;
     }
 
     //public int compareTo(String timeIn){

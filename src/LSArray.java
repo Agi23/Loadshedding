@@ -22,7 +22,7 @@ public class LSArray {
         }
         System.out.println("hoorah");
     }
-   
+
     public void PrintAreas(final String stage, final String day, final String startTime) {
         // change format
         usrLSTime = stage + '_' + day + "_"+ startTime;
@@ -46,22 +46,31 @@ public class LSArray {
 
     private void initialise() {
         arrInfoItems = new LSInfoItem[2976];
-        ReadFile();
+        ReadFile("LSData.txt");
     }
-
+    public LSArray(String txtfile){
+        int pos = txtfile.lastIndexOf(".");
+        int size = Integer.valueOf(txtfile.substring(4,pos));
+        arrInfoItems = new LSInfoItem[size];
+        ReadFile(txtfile);
+    }
     public LSArray() {
         initialise();
         PrintAllAreas();
     }
-
+    public LSArray(boolean test){
+        initialise();
+    }
     public LSArray(final String stage, final String day, final String startTime) {
         initialise();
         PrintAreas(stage, day, startTime);
     }
-
-    public void ReadFile() {
+    public LSInfoItem[] getArray(){
+        return arrInfoItems;
+    }
+    public void ReadFile(String txtfile) {
         String line;
-        String pathToFile = "LSData.txt";
+        String pathToFile = txtfile;
         BufferedReader fin = null;
         k = 0;
         try {
@@ -88,7 +97,10 @@ public class LSArray {
         System.exit(0);
         }
 
+      
         
 
     }
+
+
 }

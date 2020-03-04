@@ -2,10 +2,10 @@
 
 public class LSArrayApp {
     
-   
+    
+
     public static void main(String[] args) {
         LSArray ArrayData;
-        
         if (args.length == 0)
             ArrayData = new LSArray();
         else{
@@ -16,8 +16,10 @@ public class LSArrayApp {
             } 
             else{
                 System.out.println("Error: incorrect format");}
+                ArrayData = null;
         }
          
     } 
      
+
 }
