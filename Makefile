@@ -1,4 +1,3 @@
-# Makefile for Assignment One
 SRC_DIR = ./src
 BIN_DIR = ./bin
 DOC_DIR = ./doc
@@ -9,14 +8,12 @@ JFLAGS = -g -d $(BIN_DIR) -cp $(BIN_DIR)
 vpath %.java $(SRC_DIR)
 vpath %.class $(BIN_DIR)
 
-# General build rule for java sources
 .SUFFIXES:  .java  .class
 
 .java.class:
 	$(JAVAC)  $(JFLAGS)  $<
 
-#$< expands to a matching source file
-#default rule - will be invoked by make
+
 
 ClASSES:LSInfoItem.class \
 	LSArray.class \

@@ -1,12 +1,14 @@
-// Hussein's Binary Tree
-// 26 March 2017
-// Hussein Suleman
+
 
 public class BTQueueNode
 {
    BinaryTreeNode node;
    BTQueueNode next;
    
+   
+   /** 
+    * sets value of current node and the next node 
+    */
    public BTQueueNode ( BinaryTreeNode n, BTQueueNode nxt )
    {
       node = n;

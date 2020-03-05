@@ -9,6 +9,10 @@ import java.io.IOException;
 public class testGen{
 
 
+    
+    /** 
+    * generates 10 textfiles of varying lengths from random items of LSData.txt
+     */
     public static void main(String[] args) {
         //get entire array
         LSArray Data = new LSArray(true);
@@ -36,9 +40,12 @@ public class testGen{
 
     }
 
+    
+    /** 
+     * rearranges all the items in the array in a random order
+     */
     static void shuffleArray(LSInfoItem[] ar)
     {
-      // If running on Java 6 or older, use `new Random()` on RHS here
       Random rnd = ThreadLocalRandom.current();
       for (int i = ar.length - 1; i > 0; i--)
       {
